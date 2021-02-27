@@ -7,7 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class Lox {
+import static com.greenkode.lox.TokenType.EOF;
+
+class Lox {
 
     private static boolean hadError;
 
@@ -33,7 +35,12 @@ public class Lox {
         var scanner = new Scanner(source);
         var tokens = scanner.scanTokens();
 
-        tokens.forEach(System.out::println);
+        var parser = new Parser(tokens);
+        var expression = parser.parse();
+
+        if (hadError) return;
+
+        System.out.println(new AstPrinter().print(expression));
     }
 
     private static void runPrompt() throws IOException {
@@ -51,6 +58,15 @@ public class Lox {
 
     static void error(int line, String message) {
         report(line, "", message);
+    }
+
+
+    static void error(Token token, String message) {
+        if (token.type == EOF) {
+            report(token.line, " at end", message);
+        } else {
+            report(token.line, " at '" + token.lexeme + "'", message);
+        }
     }
 
     private static void report(int line, String where, String message) {
