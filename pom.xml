@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>crafting-interpreters-jlox</artifactId>
+    <groupId>com.greenkode</groupId>
+    <artifactId>jlox</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -13,4 +13,18 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <mainClass>com.greenkode.lox.Lox</mainClass>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>
