@@ -11,7 +11,9 @@ import static com.greenkode.lox.TokenType.EOF;
 
 class Lox {
 
+    private static final Interpreter interpreter = new Interpreter();
     private static boolean hadError;
+    private static boolean hadRuntimeError;
 
     public static void main(String[] args) throws IOException {
 
@@ -39,6 +41,9 @@ class Lox {
         var expression = parser.parse();
 
         if (hadError) return;
+        interpreter.interpret(expression);
+
+        if (hadRuntimeError) System.exit(70);
 
         System.out.println(new AstPrinter().print(expression));
     }
@@ -72,5 +77,10 @@ class Lox {
     private static void report(int line, String where, String message) {
         System.err.println("[line " + line + "] Error" + where + ": " + message);
         hadError = true;
+    }
+
+    static void runtimeError(RuntimeError error) {
+        System.err.println(error.getMessage() + "\n[line " + error.getToken().line + "]");
+        hadRuntimeError = true;
     }
 }
