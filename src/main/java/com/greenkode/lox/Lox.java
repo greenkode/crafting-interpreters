@@ -38,14 +38,12 @@ class Lox {
         var tokens = scanner.scanTokens();
 
         var parser = new Parser(tokens);
-        var expression = parser.parse();
+        var statements = parser.parse();
 
         if (hadError) return;
-        interpreter.interpret(expression);
+        interpreter.interpret(statements);
 
         if (hadRuntimeError) System.exit(70);
-
-        System.out.println(new AstPrinter().print(expression));
     }
 
     private static void runPrompt() throws IOException {
